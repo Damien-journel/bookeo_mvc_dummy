@@ -36,14 +36,25 @@ class BookRepository extends Repository
     public function findAll(int $limit = null, int $page = null): array
     {
         //@todo commencer par une requête simple puis gérer la pagination
-        
+        $offset = ($limit !== null && $page !== null) ? ($page - 1) * $limit : null;
 
+        if ($limit !== null && $offset !== null) {
+            $query = $this->pdo->prepare("SELECT * FROM book ORDER BY id DESC LIMIT :offset, :limit");
+            $query->bindParam(':offset', $offset, \PDO::PARAM_INT);
+            $query->bindParam(':limit', $limit, \PDO::PARAM_INT);
+        } else {
+            $query = $this->pdo->prepare("SELECT * FROM book");
+        }
+        
+        $query->execute();
+        $results = $query->fetchAll(\PDO::FETCH_ASSOC);
         $booksArray = [];
 
         //@todo faire une boucle sur le tableau de livre pour hydrater et stocker les objets livres avec Book::createAndHydrate
-    
+        foreach ($results as $bookData) {
+            $booksArray[] = Book::createAndHydrate($bookData);
+        }
         
-
         return $booksArray;
     }
 

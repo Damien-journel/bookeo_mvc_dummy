@@ -38,8 +38,7 @@ class PageController extends Controller
     {
 
         $bookRepository = new BookRepository;
-        $books = $bookRepository->findAll(_HOME_BOOK_LIMIT_);
-
+        $books = $bookRepository->findAll(_HOME_BOOK_LIMIT_, 1);
         $this->render('page/home', [
             'books' => $books
         ]);

@@ -3,26 +3,27 @@
         <div class="card-body p-4">
             <h2>Commentaires</h2>
             <div class="row">
+            <?php foreach ($comments as $comment): ?>
                 <div class="col">
                     <div class="d-flex flex-start bg-body-tertiary p-2 my-1">
-
                         <div class="flex-grow-1 flex-shrink-1">
                             <div>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <p class="mb-1">
                                         <span class="small">
-                                            John - Le 20/09/2023 à 13:41:21 </span>
+                                            <?= $comment->getUser()->getLastName() ?> - <?= $comment->getComment() ?>
+                                        </span>
                                     </p>
                                 </div>
                                 <p class="small mb-0">
-                                    J'ai adoré cette BD ! Il faut vraiment tester ça ! </p>
+                                    <?= $comment->getContent() ?>
+                                </p>
                             </div>
                         </div>
                     </div>
-
-
                 </div>
-            </div>
+            <?php endforeach; ?>
+        </div>
 
             <form method="POST">
                 <div class="mb-3">
